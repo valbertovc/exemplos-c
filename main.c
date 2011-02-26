@@ -1,5 +1,5 @@
 #include<stdio.h>
-
+<code>print_r(array());</code>
 const FALSE = 0;
 const TRUE = 1;
 
