@@ -11,7 +11,7 @@
 
 #include<stdio.h>
 
-int main2(){
+int main(){
      char texto[100];
      int i, tamanho;
      printf("Escreva uma string e ela será exibida de trás pra frente: ");
