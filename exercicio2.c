@@ -14,7 +14,7 @@
 const int FALSE = 0;
 const int TRUE = -1;
 
-//protoipos dos metodos
+//prototipos dos metodos
 void retira_brancos(char *texto);
 int is_palindrome(char *texto);
 
