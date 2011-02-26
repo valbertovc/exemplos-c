@@ -1,7 +1,7 @@
 /* Data: 24/02/2011
  * Programador: Valberto Carneiro
  * Objetivo: Faca um programa que leia uma string do teclado e diga se ela e 
-             palindrome. Uma string e palíndrome quando pode ser lida tanto 
+             palindrome. Uma string e palindrome quando pode ser lida tanto 
              de tras pra frente quanto de frente para tras e possui exatamente 
              a mesma sequencia de caracteres. Ex.: ASA, SUBI NO ONIBUS. 
              Desconsidere os espacos. 
