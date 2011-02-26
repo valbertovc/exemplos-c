@@ -1,6 +1,6 @@
 /* Data: 24/02/2011
  * Programador: Valberto Carneiro
- * Objetivo: Faça um procedimento que receba uma string e a retorne escrita de tras pra frente.
+ * Objetivo: Faca um procedimento que receba uma string e a retorne escrita de tras pra frente.
  * Explicando: 
  *             Le-se uma string, permitindo espacos em branco.
  *             Obetem-se o tamanho dela.
