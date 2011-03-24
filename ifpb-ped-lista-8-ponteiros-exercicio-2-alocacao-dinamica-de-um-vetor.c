@@ -1,12 +1,12 @@
 /* Data: 23/03/2011 
  * Programador: Valberto Carneiro 
  * Objetivo: Escreva um programa que, utilizando um vetor (alocado dinamicamente) 
- * de n números inteiros n será lido), faça as seguintes operações.  
+ * de n numeros inteiros n sera lido), faca as seguintes operacoes.  
  *   a)  leia o tamanho do vetor; 
  *   b) leia os elementos do vetor  
  *   c) multiplique todos os elementos do vetor por 2; 
  *   d) exiba o vetor. 
- * Obs: utilize a notação de ponteiros ao invés da notação de vetor. 
+ * Obs: utilize a notacao de ponteiros ao inves da notacao de vetor. 
  **/
 
 #include<stdio.h>

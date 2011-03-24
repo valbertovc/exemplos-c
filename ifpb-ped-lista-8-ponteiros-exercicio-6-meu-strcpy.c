@@ -1,7 +1,7 @@
 /* Data: 23/03/2011
  * Programador: Valberto Carneiro
- * Objetivo: Escreva uma função que simule a função strcpy (da biblioteca padrão 
- * de C), utilizando a notação de ponteiros.
+ * Objetivo: Escreva uma funcao que simule a funcao strcpy (da biblioteca padrao 
+ * de C), utilizando a notacao de ponteiros.
  */
  
 #include<stdio.h>

@@ -1,7 +1,7 @@
 /* Data: 23/03/2011
  * Programador: Valberto Carneiro
- * Objetivo: Escreva um procedimento chamado troca que receba 2 variáveis 
- * inteiras (X e Y) e troque o conteúdo entre elas. Escreva também um programa 
+ * Objetivo: Escreva um procedimento chamado troca que receba 2 variaveis 
+ * inteiras (X e Y) e troque o conteudo entre elas. Escreva tambem um programa 
  * para testar o procedimento criado.
  */
  

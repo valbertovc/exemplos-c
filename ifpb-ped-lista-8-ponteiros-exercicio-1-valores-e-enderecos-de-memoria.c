@@ -1,6 +1,6 @@
 /* Data: 23/03/2011
  * Programador: Valberto Carneiro
- * Objetivo: Exibir os valores contidos nas variáveis e seus endereços de memória.
+ * Objetivo: Exibir os valores contidos nas variaveis e seus enderecos de memoria.
  */
 
 #include<stdio.h>
