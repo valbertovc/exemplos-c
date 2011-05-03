@@ -2,9 +2,6 @@
 #define L_ENC
 #define VAZIA 0
 
-#include <stddef.h>
-#include <stdlib.h>
-
 typedef int Elem;
 
 typedef struct no {
