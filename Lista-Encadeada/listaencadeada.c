@@ -31,10 +31,9 @@ int tamanho(Lista list){
 }
 
 /* A insercao em uma lista encadeada requer um cuidado do programador, de forma
- * que havera duas situacoes diferentes de insercao, sao elas:
+ * que se deve prever as seguintes situacoes:
  *  1 - Inserir no inicio
- *  2 - Inserir nas demais posicoes(meio ou fim) 
- *
+ *  2 - Inserir nas demais posicoes(meio ou fim)
  */
 
 int inserir(Lista *list, Elem dado, int posicao){
@@ -72,21 +71,21 @@ void listar(Lista list){
 }
 
 void print_no(Tno no){
-    printf("[ %d ]%s",no.value, no.next ? "->" : "");
+    printf("[ %d ]%s", no.value, no.next ? "->" : "");
 }
 
-/*
-int posicao(Tlista list, telem dado){
-    int i = 0;
+int posicao(Lista list, Elem dado){
+    int i = 1;
     
-    while(list->next){
-        if (list->value == dado) return i+1;
+    while(list){
+        if (list->value == dado) return i;
         list = list->next;
         i++;
     }
     return 0;
 }
 
+/*
 int elemento(Tlista list, int posicao, telem *dado){
     int i = 1;
     

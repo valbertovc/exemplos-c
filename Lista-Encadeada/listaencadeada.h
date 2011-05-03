@@ -21,8 +21,8 @@ int tamanho(Lista list);
 int inserir(Lista *list, Elem dado, int posicao);
 void print_no(Tno no);
 void listar(Lista list);
+int posicao(Lista list, Elem dado);
 /*
-int posicao(Lista list, telem dado);
 int elemento(Lista list, int posicao, telem *dado);
 int remover(Lista *list, int posicao, telem *dado);
 */
