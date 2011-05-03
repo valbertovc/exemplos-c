@@ -31,7 +31,7 @@ int tamanho(Lista list){
 }
 
 /* A insercao em uma lista encadeada requer um cuidado do programador, de forma
- * que haverá duas situacoes diferentes de insercao, sao elas:
+ * que havera duas situacoes diferentes de insercao, sao elas:
  *  1 - Inserir no inicio
  *  2 - Inserir nas demais posicoes(meio ou fim) 
  *
