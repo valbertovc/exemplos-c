@@ -43,7 +43,7 @@ int inserir(Lista *list, Elem dado, int posicao){
     Tno *novo, *anterior;
     int i = 2, tam = tamanho(*list);
     
-    if (posicao > tam+1 || cheia(*list)) return 0;
+    if (posicao < 1 || posicao > tam+1 || cheia(*list)) return 0;
     
     novo = (Tno*) malloc(sizeof(Tno));
     novo->value = dado;
@@ -88,32 +88,34 @@ int posicao(Lista list, Elem dado){
     return 0;
 }
 
-/*
-int elemento(Tlista list, int posicao, telem *dado){
+int elemento(Lista list, int posicao, Elem *dado){
     int i = 1;
     
-    while(list || i <= posicao){
-        list = list->next;
-        i++;
-    }
-    if (!list) return 0;
+    if (posicao < 1 || posicao > tamanho(list) || vazia(list)) return 0;    
     
+    while(i++ < posicao) list = list->next;
     *dado = list->value;
     return 1;
 }
 
-int remover(Tlista *list, int posicao, telem *dado){
-    Tno *removido, *aux;
-    int i;
-    //verificar a posicao a ser inserida e se ainda e possivel inserir um novo no
-    if (posicao > tamanho(*list) || vazia(*list)) return 0;
-    aux = list;
-    for(i = 1; i < posicao; i++) aux = aux->next;
-    removido = aux->next;
-    aux->next = removido->next;
-    dado = removido->value;
+int remover(Lista *list, int posicao, Elem *dado){
+    Tno *removido, *anterior;
+    int i = 2;
+    
+    if (posicao < 1 || posicao > tamanho(*list) || vazia(*list)) return 0;
+    
+    if (posicao == 1){
+        removido = *list;
+        *list = removido->next;
+    } else {
+        anterior = *list;
+        while(i++ < posicao) anterior = anterior->next;
+        removido = anterior->next;
+        anterior->next = removido->next;
+    }
+    *dado = removido->value;
     free(removido);
     return 1;
 }
-*/
+
 
