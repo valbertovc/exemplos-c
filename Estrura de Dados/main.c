@@ -23,7 +23,7 @@ int main () {
            case 1:
                 printf("Digite o elemento a inserir: "); 
                 scanf("%d", &elem);
-                printf("Em que posicao voce deseja inserir o elemento? (1 a %d) :", tamanho(lista)+1); 
+                printf("Em que posicao voce deseja inserir o elemento? (1 a %d): ", tamanho(lista)+1); 
                 scanf("%d", &pos);
                 if (inserir(&lista, elem, pos)) printf("Inserido com sucesso!");
                 else printf("Erro ao inserir o elemento!");
@@ -48,6 +48,16 @@ int main () {
                 if (elemento(lista, pos, &elem)) printf("%d Encontrado na posicao %d", elem, pos);
                 else printf("Nao encontrado!");
                 break;
+           case 5:
+                printf("Digite o elemento a empilhar: "); 
+                scanf("%d", &elem);
+                if (empilhar(&lista, elem)) printf("Empilhado com sucesso!");
+                else printf("Erro ao empilhar o elemento!");
+                break;
+           case 6:
+                if (desempilhar(&lista, &elem)) printf("%d Desempilhado com sucesso!", elem);
+                else printf("Erro ao desempilhar o elemento!");
+                break;
            case 9: 
                 criar(&lista); 
                 break;
@@ -61,12 +71,16 @@ int main () {
 }
 
 void print_menu(Lista lista){    
-    printf("\nLista Encadeada\n");
+    printf("\nEstruturas de dados\n");
     printf("----------------------------------------------------------------\n");
     printf("  1 - Inserir elemento\n");
     printf("  2 - Remover elemento\n");
     printf("  3 - Encontrar posicao do elemento\n");
     printf("  4 - Buscar elemento na posicao\n");
+    printf("\n");
+    printf("  5 - Empilhar um elemento\n");
+    printf("  6 - Desempilhar um elemento\n");
+    printf("\n");
     printf("  9 - Reiniciar\n");
     printf("  0 - Sair\n");
     printf("----------------------------------------------------------------\n");
@@ -74,3 +88,4 @@ void print_menu(Lista lista){
     printf("----------------------------------------------------------------\n");
     printf("Opcao: ");
 }
+
