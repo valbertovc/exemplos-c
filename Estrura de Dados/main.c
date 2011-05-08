@@ -1,3 +1,15 @@
+/* Data: 08/05/2011
+ * Programador: Valberto Carneiro
+ * Objetivo: Conseguir manipular estruturas de dados atraves das operacoes
+ *           implementadas sobre elas.
+ *           Apresentar um menu com diversas opcoes para o usuario realizar testes
+ *           e entender como essas estruturas de dados se comportam.
+ *           Manipular tres Tipos Abstratos de Dados - TAD -:
+ *            - Listas encadeadas
+ *            - Pilhas
+ *            - Filas
+ */
+
 #include<stdio.h>
 #include<conio.h>
 
@@ -58,6 +70,16 @@ int main () {
                 if (desempilhar(&lista, &elem)) printf("%d Desempilhado com sucesso!", elem);
                 else printf("Erro ao desempilhar o elemento!");
                 break;
+           case 7:
+                printf("Digite o elemento para entrar no fim da fila: "); 
+                scanf("%d", &elem);
+                if (entrar(&lista, elem)) printf("%d Enfileirado com sucesso!", elem);
+                else printf("Erro ao enfileirar o elemento!");
+                break;
+           case 8:
+                if (sair(&lista, &elem)) printf("%d Saiu da fila com sucesso!", elem);
+                else printf("Erro ao retirar o elemento da fila!");
+                break;
            case 9: 
                 criar(&lista); 
                 break;
@@ -80,6 +102,9 @@ void print_menu(Lista lista){
     printf("\n");
     printf("  5 - Empilhar um elemento\n");
     printf("  6 - Desempilhar um elemento\n");
+    printf("\n");
+    printf("  7 - Enfileirar um elemento\n");
+    printf("  8 - Retirar um elemento da fila\n");
     printf("\n");
     printf("  9 - Reiniciar\n");
     printf("  0 - Sair\n");

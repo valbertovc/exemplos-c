@@ -1,3 +1,13 @@
+/* Data: 08/05/2011
+ * Programador: Valberto Carneiro
+ * Objetivo: Implementar as diversas operacoes que manipulam e controlam uma lista
+ *           encadeada. As listas encadeadas sao estrutras de dados que nao 
+ *           possuem limitacoes nas suas operacoes de acesso, como insercao e 
+ *           remocao de elementos. A partir de uma lista encadeada, e possivel
+ *           implementar varios outros TADs atraves do encapsulamento de
+ *           operacoes e reutilizacao de codigo.
+ */
+
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -33,12 +43,6 @@ int tamanho(Lista list){
    return i;
 }
 
-/* A insercao em uma lista encadeada requer um cuidado do programador, de forma
- * que se deve prever as seguintes situacoes:
- *  1 - Inserir no inicio
- *  2 - Inserir nas demais posicoes(meio ou fim)
- */
-
 int inserir(Lista *list, Elem dado, int posicao){
     Tno *novo, *anterior;
     int i = 2, tam = tamanho(*list);
@@ -58,9 +62,6 @@ int inserir(Lista *list, Elem dado, int posicao){
        novo->next = anterior->next;
        anterior->next = novo;
     }
-    
-    print_no(*novo);
-    
     return 1;
 }
 

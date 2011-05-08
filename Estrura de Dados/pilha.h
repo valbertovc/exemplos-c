@@ -1,6 +1,9 @@
-/* Data:
- * Programador:
- * Objetivo:
+/* Data: 08/05/2011
+ * Programador: Valberto Carneiro
+ * Objetivo: Especificar uma biblioteca de operacoes realizadas sobre uma pilha.
+ *           Definir um Tipo Abstrato de Dados - TAD - que reaproveite as
+ *           operacoes de uma lista encadeada comum e implementando o acesso
+ *           de controlado a pilha, empilhando e desempilhando os elementos.
  */
 
 #ifndef PILHA
