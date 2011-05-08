@@ -4,7 +4,7 @@
  *           de uma estrutura de dados do tipo lista encadeada.
  *           As filas sao estruturas de dados com operacoes de insercao e
  *           remocao com restricoes. Ela se comporta como uma fila convencional
- *           de banco, por exemplo. Os elementos da fila são inseridos, somente
+ *           de banco, por exemplo. Os elementos da fila sao inseridos, somente
  *           no final e removidos apenas do inicio. 
  */
  
