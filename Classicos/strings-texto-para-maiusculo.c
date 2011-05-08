@@ -1,7 +1,7 @@
 /* Data: 24/03/2011
  * Programador: Valberto Carneiro
  * Objetivo: Faça um programa que leia uma frase e a exiba toda em letras 
- * maiúsculas.
+ * maiusculas.
  */
  
 #include<stdio.h>

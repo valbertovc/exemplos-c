@@ -1,10 +1,10 @@
-/* 
- * Data: 02/03/2011
+/* Data: 02/03/2011
  * Programador: Valberto Carneiro
- * Objetivo: Faça uma função que teste se um número é primo ou não. Em seguida, 
- * use essa função no main para imprimir os 10 primeiro números primos.
- * Obs.: A função não deve imprimir nada, deve apenas retornar verdadeiro ou 
- * falso se o número for primo ou não. Os comandos de impressão devem estar apenas no main.
+ * Objetivo: Faca uma funcao que teste se um numero e primo ou nao. Em seguida, 
+ * use essa funcao no main para imprimir os 10 primeiro numeros primos.
+ * Obs.: A funcao nao deve imprimir nada, deve apenas retornar verdadeiro ou 
+ * falso se o numero for primo ou nao. Os comandos de impressao devem estar 
+ * apenas no main.
  */
  
 #include<stdio.h>

@@ -1,6 +1,6 @@
 /* Data: 24/03/2011
  * Programador: Valberto Carneiro
- * Objetivo: Faça um programa que receba uma string do teclado e a exiba 
+ * Objetivo: Faca um programa que receba uma string do teclado e a exiba 
  * invertida. 
  * Exemplo:   
  *   Entrada -> MARIA BONITA 

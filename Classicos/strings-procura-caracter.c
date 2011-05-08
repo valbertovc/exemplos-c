@@ -1,13 +1,13 @@
 /* Programador: Valberto Carneiro
  * Data: 02/03/2011
- * Objetivo: Faça uma função chamada procurar_caractere que receba como 
- * parâmetros, uma string s e um caractere c. A função deve procurar a primeira 
- * ocorrência do caractere c na string s. Achado o caractere, a função deve 
- * retornar a sua posição. Caso o caractere não seja encontrado, a função deve 
- * retornar o valor -1. Em seguida, faça um programa (main) para ler uma string 
- * do usuário e um caractere e depois use a função para procurar o caractere na 
- * string lida. O programa deve exibir uma mensagem dizendo em qual posição o 
- * caractere foi encontrado ou se ele não está presente na string.
+ * Objetivo: Faca uma funcao chamada procurar_caractere que receba como 
+ * parametros, uma string s e um caractere c. A funcao deve procurar a primeira 
+ * ocorrencia do caractere c na string s. Achado o caractere, a funcao deve 
+ * retornar a sua posicao. Caso o caractere nao seja encontrado, a funcao deve 
+ * retornar o valor -1. Em seguida, faca um programa (main) para ler uma string 
+ * do usuario e um caractere e depois use a funcao para procurar o caractere na 
+ * string lida. O programa deve exibir uma mensagem dizendo em qual posicao o 
+ * caractere foi encontrado ou se ele nao esta presente na string.
  */
 
 #include<stdio.h>
