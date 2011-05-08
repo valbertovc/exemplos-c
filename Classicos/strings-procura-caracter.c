@@ -7,7 +7,7 @@
  * retornar o valor -1. Em seguida, faca um programa (main) para ler uma string 
  * do usuario e um caractere e depois use a funcao para procurar o caractere na 
  * string lida. O programa deve exibir uma mensagem dizendo em qual posicao o 
- * caractere foi encontrado ou se ele nao esta presente na string
+ * caractere foi encontrado ou se ele nao esta presente na string.
  */
 
 #include<stdio.h>
