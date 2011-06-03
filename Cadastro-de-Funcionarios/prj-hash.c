@@ -3,15 +3,10 @@
 #define VAZIO -1
 #define LIVRE -2
 #define OCUPADO -3
-#define FUNC_FILENAME "LISTA-DE-FUNCIONARIOS.txt"
-
+#define FUNC_FILENAME "FUNCIONARIOS.txt"
+#define TMP_FILENAME "FUNCIONARIOS-TMP.txt"
 //identificar os programadores
 
-typedef struct {
-    int key;
-    int end;
-    int status;
-} Hash;
 
 typedef struct {
     int codigo;
@@ -19,12 +14,17 @@ typedef struct {
     float salario;
 } Funcionario;
 
-FILE *arq;
-Hash h[N];
-Funcionario f;
-//variavel de testes do endereco
-int endereco = 1;
+typedef struct {
+    int key;
+    int end;
+    int status;
+} Hash;
 
+Hash h[N];
+FILE *arq;
+Funcionario f;
+
+//PROTOTIPO DAS FUNCOES HASH
 void init_hash();
 int _hash(int key);
 int rehash(int i);
@@ -38,6 +38,7 @@ int search_hash(int key);
 int print_to_file();
 void clear_hash();
 
+
 void print_menu();
 
 void exibir_funcionario();
@@ -50,7 +51,7 @@ int main(){
     int opcao;
         
     init_hash();
-    load_from_file();
+    //load_from_file();
     
     do {
         print_menu();
@@ -75,7 +76,7 @@ int main(){
     
     if (print_to_file()) printf("Arquivo gerado!\n");
     else printf("Erro ao gerar arquivo!\n");
-    unload_to_file();
+    //unload_to_file();
     
     system("pause");
 }
@@ -83,7 +84,7 @@ int main(){
 void unload_to_file() {
     int i;
     FILE *tmp;
-    tmp = fopen("tmp.txt", "w");
+    tmp = fopen(TMP_FILENAME, "w");
     if (!arq) {
         printf("Erro ao abrir o arquivo");
         getch();
@@ -99,12 +100,12 @@ void unload_to_file() {
     
     for(i = 0; i < N; i++) {
         fseek(arq, h[i].end * sizeof(Hash), SEEK_SET);
-        fscanf(arq, "%d %s %f\n", &f.codigo, f.nome, &f.salario);
+        fscanf(arq, "%d \"%s\" %f\n", &f.codigo, f.nome, &f.salario);
         
         if (h[i].status == OCUPADO) 
-            fprintf(tmp, "%d %s %f\n", f.codigo, f.nome, f.salario);
+            fprintf(tmp, "%d \"%s\" %f\n", f.codigo, f.nome, f.salario);
     }
-    rename("tmp.txt", FUNC_FILENAME);
+    rename(TMP_FILENAME, FUNC_FILENAME);
     fclose(tmp);
     fclose(arq);
 }
@@ -120,7 +121,7 @@ void load_from_file() {
     
     for(;;) {
         if (feof(arq)) break;
-        fscanf(arq, "%d %s %f\n", &f.codigo, f.nome, &f.salario);
+        fscanf(arq, "%d \"%s\" %f\n", &f.codigo, f.nome, &f.salario);
         insert_hash(f.codigo);
     }
     fclose(arq);
@@ -145,7 +146,7 @@ void consultar_um_funcionario() {
     }
     
     fseek(arq, end * sizeof(Hash), SEEK_SET);
-    fscanf(arq, "%d %s %f\n", &f.codigo, f.nome, &f.salario);
+    fscanf(arq, "%d \"%s\" %f\n", &f.codigo, f.nome, &f.salario);
     exibir_funcionario();
     fclose(arq);
 }
@@ -159,8 +160,9 @@ void exibir_funcionario() {
 void inserir_funcionario() {
     printf("Codigo: ");
     scanf("%d", &f.codigo);
+    fflush(stdin);
     printf("Nome: ");
-    scanf("%s", f.nome);
+    gets(f.nome);
     printf("Salario: ");
     scanf("%f", &f.salario);
     
@@ -171,7 +173,7 @@ void inserir_funcionario() {
         return;
     }
     if (insert_hash(f.codigo)) {
-        fprintf(arq, "%d %s %f\n", f.codigo, f.nome, f.salario);
+        fprintf(arq, "%d \"%s\" %f\n", f.codigo, f.nome, f.salario);
         printf("Inserido!");
     } else {
         printf("Nao Inserido. Possivel Causa: Lista cheia ou codigo ja existe");
@@ -193,6 +195,10 @@ void print_menu(){
     printf("0 - SAIR\n\n");
     printf("DIGITE SUA OPCAO: ");
 }
+
+/*
+ * FUNCOES DE HASH
+ */
 
 void init_hash(){
      int i;
