@@ -90,7 +90,7 @@ void print_menu(){
     printf("4 - EXCLUIR TODOS OS FUNCIONARIOS\n");
     printf("5 - CONSULTAR UM FUNCIONARIO\n");
     printf("6 - LISTAR TODOS OS FUNCIONARIOS\n");
-    printf("7 - EXIBIR A SOMA E A MÉDIA DOS SALARIOS\n");
+    printf("7 - EXIBIR A SOMA E A MEDIA DOS SALARIOS\n");
     printf("8 - EXIBIR O MAIOR E O MENOR SALARIO\n");
     printf("9 - EXIBIR A ESTRUTURA DE INDICES\n");
     printf("0 - SAIR\n\n");
@@ -109,7 +109,7 @@ void consultar_funcionario() {
     
     arq = fopen(FUNC_FILENAME, "a");
     if (!arq){
-        printf("Erro ao abrir o arquivo para insercao do funcionario6\n");
+        printf("Erro ao abrir o arquivo para insercao do funcionario!\n");
         getch();
         return;
     }
@@ -131,12 +131,13 @@ void inserir_funcionario() {
     
     arq = fopen(FUNC_FILENAME, "a");
     if (!arq){
-        printf("Erro ao abrir o arquivo para insercao do funcionario");
+        printf("Erro ao abrir o arquivo para insercao do funcionario\n");
         getch();
         return;
     }
     fseek(arq, 0, SEEK_END);
-    insert_hash(f.codigo);
+    if (!insert_hash(f.codigo))
+        printf("Nao inserido!\n");
     fprintf(arq, "%d \'%s\', %f\n", f.codigo, f.nome, f.salario);
     fclose(arq);
 }
