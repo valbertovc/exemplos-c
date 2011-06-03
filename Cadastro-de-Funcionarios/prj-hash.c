@@ -1,16 +1,18 @@
 #include <stdio.h>
 #define N 5
+#define MAX_SIZE_NAME 30
 #define VAZIO -1
 #define LIVRE -2
 #define OCUPADO -3
-#define FUNC_FILENAME "FUNCIONARIOS.txt"
-#define TMP_FILENAME "FUNCIONARIOS-TMP.txt"
+#define FUNC_FILENAME "FUNCIONARIOS.bin"
+#define TMP_FILENAME "FUNCIONARIOS-TMP.bin"
+
 //identificar os programadores
 
 
 typedef struct {
     int codigo;
-    char nome[30];
+    char nome[MAX_SIZE_NAME];
     float salario;
 } Funcionario;
 
@@ -20,7 +22,7 @@ typedef struct {
     int status;
 } Hash;
 
-Hash h[N];
+Hash h[N], aux;
 FILE *arq;
 Funcionario f;
 
@@ -37,13 +39,14 @@ int remove_hash(int key);
 long search_hash(int key);
 int print_to_file();
 void clear_hash();
-
+void init_aux();
 
 void print_menu();
 
 void exibir_funcionario();
 void inserir_funcionario();
-void consultar_funcionario();
+//void consultar_funcionario();
+void listar_funcionarios();
 void load_from_file();
 void unload_to_file();
 
@@ -64,7 +67,8 @@ int main(){
             case 2: printf("Opcao 2\n"); break;
             case 3: printf("Opcao 3\n"); break;
             case 4: printf("Opcao 4\n"); break;
-            case 5: consultar_funcionario(); break;
+            case 5:  break;
+            case 6: listar_funcionarios(); break;
                  break;
             default: printf("Opcao padrao\n");
         }
@@ -82,6 +86,53 @@ int main(){
     system("pause");
 }
 
+/* DEVE LISTAR APENAS OS FUNCIONARIOS QUE AINDA ESTAO NO HASH
+ */
+
+void listar_funcionarios() {
+    arq = fopen(FUNC_FILENAME, "rb");
+    if (!arq){
+        printf("Erro ao abrir o arquivo para listagem dos funcionarios\n");
+        getch();
+        return;
+    }
+    
+    while(!feof(arq)){
+        if (fread(&f, sizeof(Funcionario), 1, arq)) {
+            printf("Codigo..: %d\n", f.codigo);
+            printf("Nome....: %s\n", f.nome);
+            printf("Salario.: %f\n\n", f.salario);
+        }
+    }
+    
+    fclose(arq);
+}
+
+void inserir_funcionario() {
+    printf("Codigo: ");
+    scanf("%d", &f.codigo);
+    fflush(stdin);
+    printf("Nome: ");
+    gets(f.nome);
+    printf("Salario: ");
+    scanf("%f", &f.salario);
+    
+    arq = fopen(FUNC_FILENAME, "ab");
+    if (!arq){
+        printf("Erro ao abrir o arquivo para insercao do funcionario\n");
+        getch();
+        return;
+    }
+    if (!insert_hash(f.codigo)) {
+        printf("Nao inserido!\n");
+    } else {
+        fwrite(&f, sizeof(Funcionario), 1, arq);
+        printf("Inserido!");
+    }
+    getch();
+    fclose(arq);
+}
+
 void print_menu(){
     printf("\nCADASTRO DE FUNCIONARIOS\n\n");
     printf("1 - INSERIR UM NOVO FUNCIONARIO\n");
@@ -95,51 +146,6 @@ void print_menu(){
     printf("9 - EXIBIR A ESTRUTURA DE INDICES\n");
     printf("0 - SAIR\n\n");
     printf("DIGITE SUA OPCAO: ");
-}
-
-void consultar_funcionario() {
-    long end;
-    printf("Codigo: ");
-    scanf("%d", &f.codigo);
-    
-    end = search_hash(f.codigo);
-    if (!end) {
-        printf("Nao encontrado!\n");
-    }
-    
-    arq = fopen(FUNC_FILENAME, "a");
-    if (!arq){
-        printf("Erro ao abrir o arquivo para insercao do funcionario!\n");
-        getch();
-        return;
-    }
-    fseek(arq, end, SEEK_SET);
-    fscanf(arq, "%d \'%s\', %f\n", f.codigo, f.nome, f.salario);
-    
-    printf("Codigo....: %d\nNome......: %s\nSalario...: %.2f\n", f.codigo, f.nome, f.salario);
-    getch();
-}
-
-void inserir_funcionario() {
-    printf("Codigo: ");
-    scanf("%d", &f.codigo);
-    fflush(stdin);
-    printf("Nome: ");
-    gets(f.nome);
-    printf("Salario: ");
-    scanf("%f", &f.salario);
-    
-    arq = fopen(FUNC_FILENAME, "a");
-    if (!arq){
-        printf("Erro ao abrir o arquivo para insercao do funcionario\n");
-        getch();
-        return;
-    }
-    fseek(arq, 0, SEEK_END);
-    if (!insert_hash(f.codigo))
-        printf("Nao inserido!\n");
-    fprintf(arq, "%d \'%s\', %f\n", f.codigo, f.nome, f.salario);
-    fclose(arq);
 }
 
 /*
@@ -226,7 +232,7 @@ int print_to_file(){
 int insert_hash(int key){
     int i;
     int count = 0;
-    
+ 
     if (search_hash(key)) return 0;
     i = _hash(key);
     while (h[i].status == OCUPADO && !hash_cheio(count)){
@@ -238,6 +244,7 @@ int insert_hash(int key){
         h[i].key = key;
         h[i].status = OCUPADO;
         h[i].end = ftell(arq);
+        printf("hash insert ok\n");
         return 1;
     } else {
         return 0;
@@ -267,12 +274,26 @@ int remove_hash(int key){
     return 0;
 }
 
+void init_aux() {
+    aux.status = VAZIO;
+    aux.end = 0;
+    aux.key = 0;
+}
+
 long search_hash(int key){
     int i;
     int count = 0;
+    
+    init_aux();
+    
     i = _hash(key);
     while(h[i].status != VAZIO && !hash_cheio(count)){
-        if (h[i].key == key) return h[i].end;
+        if (h[i].key == key) {
+            aux.status = h[i].status;
+            aux.end = h[i].end;
+            aux.key = h[i].key;
+            return 1;
+        }
         i = duplo_rehash(i, key);
         count++;
     }
