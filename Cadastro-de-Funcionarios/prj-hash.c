@@ -34,7 +34,7 @@ int hash_cheio(int valor);
 void print_hash();
 int insert_hash(int key);
 int remove_hash(int key);
-int search_hash(int key);
+long search_hash(int key);
 int print_to_file();
 void clear_hash();
 
@@ -43,7 +43,7 @@ void print_menu();
 
 void exibir_funcionario();
 void inserir_funcionario();
-void consultar_um_funcionario();
+void consultar_funcionario();
 void load_from_file();
 void unload_to_file();
 
@@ -64,7 +64,7 @@ int main(){
             case 2: printf("Opcao 2\n"); break;
             case 3: printf("Opcao 3\n"); break;
             case 4: printf("Opcao 4\n"); break;
-            case 5: printf("Consultar!\n"); break;
+            case 5: consultar_funcionario(); break;
                  break;
             default: printf("Opcao padrao\n");
         }
@@ -97,31 +97,44 @@ void print_menu(){
     printf("DIGITE SUA OPCAO: ");
 }
 
-void inserir_funcionario() {
-    int cod;
-    char nome[30];
-    float salario;
-    
+void consultar_funcionario() {
+    long end;
     printf("Codigo: ");
-    scanf("%d", &cod);
-    fflush(stdin);
-    printf("Nome: ");
-    gets(nome);
-    printf("Salario: ");
-    scanf("%f", &salario);
+    scanf("%d", &f.codigo);
     
-    f.codigo = cod;
-    strcpy(f.nome, nome);
-    f.salario = salario;
+    end = search_hash(f.codigo);
+    if (!end) {
+        printf("Nao encontrado!\n");
+    }
     
     arq = fopen(FUNC_FILENAME, "a");
+    if (!arq){
+        printf("Erro ao abrir o arquivo para insercao do funcionario6\n");
+        getch();
+        return;
+    }
+    fseek(arq, end, SEEK_SET);
+    fscanf(arq, "%d \'%s\', %f\n", f.codigo, f.nome, f.salario);
     
+    printf("Codigo....: %d\nNome......: %s\nSalario...: %.2f\n", f.codigo, f.nome, f.salario);
+    getch();
+}
+
+void inserir_funcionario() {
+    printf("Codigo: ");
+    scanf("%d", &f.codigo);
+    fflush(stdin);
+    printf("Nome: ");
+    gets(f.nome);
+    printf("Salario: ");
+    scanf("%f", &f.salario);
+    
+    arq = fopen(FUNC_FILENAME, "a");
     if (!arq){
         printf("Erro ao abrir o arquivo para insercao do funcionario");
         getch();
         return;
     }
-    
     fseek(arq, 0, SEEK_END);
     insert_hash(f.codigo);
     fprintf(arq, "%d \'%s\', %f\n", f.codigo, f.nome, f.salario);
@@ -253,7 +266,7 @@ int remove_hash(int key){
     return 0;
 }
 
-int search_hash(int key){
+long search_hash(int key){
     int i;
     int count = 0;
     i = _hash(key);
