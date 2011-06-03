@@ -16,7 +16,7 @@ typedef struct {
 
 typedef struct {
     int key;
-    int end;
+    long end;
     int status;
 } Hash;
 
@@ -54,6 +54,7 @@ int main(){
     //load_from_file();
     
     do {
+        print_hash();
         print_menu();
         scanf("%d", &opcao);
         
@@ -63,7 +64,7 @@ int main(){
             case 2: printf("Opcao 2\n"); break;
             case 3: printf("Opcao 3\n"); break;
             case 4: printf("Opcao 4\n"); break;
-            case 5: consultar_um_funcionario(); break;
+            case 5: printf("Consultar!\n"); break;
                  break;
             default: printf("Opcao padrao\n");
         }
@@ -81,106 +82,6 @@ int main(){
     system("pause");
 }
 
-void unload_to_file() {
-    int i;
-    FILE *tmp;
-    tmp = fopen(TMP_FILENAME, "w");
-    if (!arq) {
-        printf("Erro ao abrir o arquivo");
-        getch();
-        return;
-    }
-    
-    arq = fopen(FUNC_FILENAME, "r");
-    if (!arq) {
-        printf("Erro ao abrir o arquivo");
-        getch();
-        return;
-    }
-    
-    for(i = 0; i < N; i++) {
-        fseek(arq, h[i].end * sizeof(Hash), SEEK_SET);
-        fscanf(arq, "%d \"%s\" %f\n", &f.codigo, f.nome, &f.salario);
-        
-        if (h[i].status == OCUPADO) 
-            fprintf(tmp, "%d \"%s\" %f\n", f.codigo, f.nome, f.salario);
-    }
-    rename(TMP_FILENAME, FUNC_FILENAME);
-    fclose(tmp);
-    fclose(arq);
-}
-
-void load_from_file() {
-    int cod;
-    arq = fopen(FUNC_FILENAME, "r");
-    if (!arq) {
-        printf("Erro ao abrir o arquivo");
-        getch();
-        return;
-    }
-    
-    for(;;) {
-        if (feof(arq)) break;
-        fscanf(arq, "%d \"%s\" %f\n", &f.codigo, f.nome, &f.salario);
-        insert_hash(f.codigo);
-    }
-    fclose(arq);
-}
-
-void consultar_um_funcionario() {
-    int codigo, end;
-    printf("Codigo: ");
-    scanf("%d", &codigo);
-    end = search_hash(codigo);
-    
-    if (!end){
-        printf("Nao encontrado!\n");
-        return;
-    }
-    
-    arq = fopen(FUNC_FILENAME, "r");
-    if (!arq) {
-        printf("Erro ao abrir o arquivo");
-        getch();
-        return;
-    }
-    
-    fseek(arq, end * sizeof(Hash), SEEK_SET);
-    fscanf(arq, "%d \"%s\" %f\n", &f.codigo, f.nome, &f.salario);
-    exibir_funcionario();
-    fclose(arq);
-}
-
-void exibir_funcionario() {
-    printf("Codigo..: %d\n", f.codigo);
-    printf("Nome....: %s\n", f.nome);
-    printf("Salario.: %f\n", f.salario);
-}
-
-void inserir_funcionario() {
-    printf("Codigo: ");
-    scanf("%d", &f.codigo);
-    fflush(stdin);
-    printf("Nome: ");
-    gets(f.nome);
-    printf("Salario: ");
-    scanf("%f", &f.salario);
-    
-    arq = fopen(FUNC_FILENAME, "a+");
-    if (!arq) {
-        printf("Erro ao abrir o arquivo");
-        getch();
-        return;
-    }
-    if (insert_hash(f.codigo)) {
-        fprintf(arq, "%d \"%s\" %f\n", f.codigo, f.nome, f.salario);
-        printf("Inserido!");
-    } else {
-        printf("Nao Inserido. Possivel Causa: Lista cheia ou codigo ja existe");
-    }   
-    fclose(arq);
-}
-
 void print_menu(){
     printf("\nCADASTRO DE FUNCIONARIOS\n\n");
     printf("1 - INSERIR UM NOVO FUNCIONARIO\n");
@@ -194,6 +95,37 @@ void print_menu(){
     printf("9 - EXIBIR A ESTRUTURA DE INDICES\n");
     printf("0 - SAIR\n\n");
     printf("DIGITE SUA OPCAO: ");
+}
+
+void inserir_funcionario() {
+    int cod;
+    char nome[30];
+    float salario;
+    
+    printf("Codigo: ");
+    scanf("%d", &cod);
+    fflush(stdin);
+    printf("Nome: ");
+    gets(nome);
+    printf("Salario: ");
+    scanf("%f", &salario);
+    
+    f.codigo = cod;
+    strcpy(f.nome, nome);
+    f.salario = salario;
+    
+    arq = fopen(FUNC_FILENAME, "a");
+    
+    if (!arq){
+        printf("Erro ao abrir o arquivo para insercao do funcionario");
+        getch();
+        return;
+    }
+    
+    fseek(arq, 0, SEEK_END);
+    insert_hash(f.codigo);
+    fprintf(arq, "%d \'%s\', %f\n", f.codigo, f.nome, f.salario);
+    fclose(arq);
 }
 
 /*
@@ -237,8 +169,8 @@ void print_hash(){
     
     for (i = 0; i < N; i++){
         
-        printf("%8.0d ", h[i].key);
-        printf("%8.0d ", h[i].end);
+        printf("%8d ", h[i].key);
+        printf("%8d ", h[i].end);
         
         switch (h[i].status) {
             case LIVRE: printf("LIVRE\n"); break;
@@ -263,8 +195,8 @@ int print_to_file(){
     
     for (i = 0; i < N; i++){
         
-        fprintf(arq, "%8.0d ", h[i].key);
-        fprintf(arq, "%8.0d ", h[i].end);
+        fprintf(arq, "%8d ", h[i].key);
+        fprintf(arq, "%8d ", h[i].end);
         
         switch (h[i].status) {
             case LIVRE: fprintf(arq, "LIVRE\n"); break;
@@ -285,14 +217,13 @@ int insert_hash(int key){
     i = _hash(key);
     while (h[i].status == OCUPADO && !hash_cheio(count)){
        i = duplo_rehash(i, key);
-       //printf("colisao! Index %d\n", i);
        count++;
     }
     
-    if (!hash_cheio(count)) { 
+    if (!hash_cheio(count)) {
         h[i].key = key;
         h[i].status = OCUPADO;
-        h[i].end = ftell(arq) / sizeof(Hash);
+        h[i].end = ftell(arq);
         return 1;
     } else {
         return 0;
