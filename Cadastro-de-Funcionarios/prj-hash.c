@@ -1,7 +1,19 @@
 #include <stdio.h>
 #include "hash.c"
 #include "funcionario.c"
-//identificar os programadores
+
+/* INSTITUTO FEDERAL DE EDUCACAO CIENCIA E TECNOLOGIA
+ * CURSO SUPERIOR DE TECNOLOGIA EM SISTEMAS PARA INTERNET
+ * DISCIPLINA DE PROGRAMACAO E ESTRUTURA DE DADOS
+ *
+ * GRUPO D: HASH DUPLO
+ *
+ * ALUNOS: 
+ *
+ * PROJETO: CADASTRO DE FUNCIONARIOS UTILIZANDO ARQUIVOS
+ * BINARIOS, ESTRUTURAS HASH DUPLO, INDEXACAO.
+ 
+ */
 
 void print_menu();
 void abrir_arquivo_funcionarios();
@@ -16,7 +28,6 @@ int main(){
     
     do {
         system("cls");
-        //listar_funcionarios();
         exibir_hash();
         print_menu();
         scanf("%d", &opcao);
@@ -42,11 +53,11 @@ int main(){
 }
 
 void salvar_arquivo_de_funcionarios(){
-    
+    int status;
     FILE *tmp;
     
-    arq = fopen(FUNC_FILENAME, "rb+");
-    tmp = fopen(TMP_FILENAME, "wb+");
+    arq = fopen(FUNC_FILENAME, "rb");
+    tmp = fopen(TMP_FILENAME, "wb");
     
     if (!arq && !tmp) {
         printf("Erro ao abrir o arquivo\n");
@@ -56,20 +67,27 @@ void salvar_arquivo_de_funcionarios(){
     
     while(!feof(arq)) {
         if (fread(&f, sizeof(Funcionario), 1, arq)) {
-            printf("%s\n", f.nome);
             if(pesquisar_no_hash(f.codigo)) {
                 if (aux.status == OCUPADO){
                     fwrite(&f, sizeof(Funcionario), 1, tmp);
-                    printf("%s Salvo!\n", f.nome);
                 }
             }
         }
     }
-    //if(arq) printf("Arquivo fechado! %d\n", fclose(arq));
-    //printf("Arquivo removido! %d\n", remove(FUNC_FILENAME));
-    printf("Renomeando! %d\n", rename(TMP_FILENAME, FUNC_FILENAME));
     
-    //printf("Arquivo temporario removido! %d\n", remove(TMP_FILENAME));
+    if (arq) 
+        if (fclose(arq) != 0)
+            printf("%s nao pode ser fechado!\n", FUNC_FILENAME);
+    
+    if (tmp) 
+        if (fclose(tmp) != 0)
+            printf("%s nao pode ser fechado!\n", TMP_FILENAME);
+    
+    if (remove(FUNC_FILENAME) != 0)
+        printf("%s nao removido!\n", FUNC_FILENAME);
+    
+    if (rename(TMP_FILENAME, FUNC_FILENAME) != 0)
+        printf("%s nao renomeado!\n", TMP_FILENAME);
 }
 
 void abrir_arquivo_funcionarios(){

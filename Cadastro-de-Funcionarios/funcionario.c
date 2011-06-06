@@ -62,12 +62,12 @@ void consultar_funcionario() {
         return;         
     }
     
-    printf("\nCodigo Salario Nome\n");
-    printf("------ ------- ------------------------------\n");
+    printf("\nCodigo    Salario Nome\n");
+    printf("------ ---------- ------------------------------\n");
     printf("%6d ", f.codigo);
-    printf("%7.2f ", f.salario);
+    printf("%10.2f ", f.salario);
     printf("%s\n", f.nome);
-    printf("------ ------- ------------------------------\n\n");
+    printf("------ ---------- ------------------------------\n\n");
     system("pause");
     fclose(arq);
 }
@@ -82,22 +82,22 @@ void listar_funcionarios() {
         return;
     }
     
-    printf("\nCodigo Salario Nome\n");
-    printf("------ ------- ------------------------------\n");
+    printf("\nCodigo    Salario Nome\n");
+    printf("------ ---------- ------------------------------\n");
     
     while(!feof(arq)){
         if (fread(&f, sizeof(Funcionario), 1, arq)) {
             if (pesquisar_no_hash(f.codigo)) {
                 if(aux.status == OCUPADO) {
                     printf("%6d ", f.codigo);
-                    printf("%7.2f ", f.salario);
+                    printf("%10.2f ", f.salario);
                     printf("%s\n", f.nome);
                     //printf("%d\n", ftell(arq)-sizeof(Funcionario));
                 }
             }
         }
     }
-    printf("------ ------- ------------------------------\n\n");
+    printf("------ ---------- ------------------------------\n\n");
     system("pause");
     fclose(arq);
 }

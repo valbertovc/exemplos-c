@@ -40,8 +40,9 @@ int main() {
     printf("Salario.: %f\n", f2.salario);
     
     printf("Fechando %d\n", fclose(arq));
-    arq = NULL;
-    printf("Removendo %d\n", remove(arq));
+    printf("Removendo new %d\n", remove("input-new.bin"));
+    printf("Renomando %d\n", rename("input.bin", "input-new.bin"));
+    printf("Removendo %d\n", remove("input.bin"));
     
     system("pause");
 }
