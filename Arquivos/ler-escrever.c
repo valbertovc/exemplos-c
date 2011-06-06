@@ -38,6 +38,10 @@ int main() {
     printf("Codigo..: %d\n", f2.codigo);
     printf("Nome....: %s\n", f2.nome);
     printf("Salario.: %f\n", f2.salario);
-    fclose(arq);
+    
+    printf("Fechando %d\n", fclose(arq));
+    arq = NULL;
+    printf("Removendo %d\n", remove(arq));
+    
     system("pause");
 }
