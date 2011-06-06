@@ -37,9 +37,12 @@ int main(){
             case 1: inserir_funcionario(); break;
             case 2: break;
             case 3: excluir_funcionario(); break;
-            case 4: break;
+            case 4: excluir_todos_os_funcionarios(); break;
             case 5: consultar_funcionario(); break;
             case 6: listar_funcionarios(); break;
+            case 7: break;
+            case 8: break;
+            case 9: exibir_hash(); break;
             default: printf("Opcao padrao\n");
         }
         
@@ -50,64 +53,6 @@ int main(){
     salvar_arquivo_de_funcionarios();
     
     system("pause");
-}
-
-void salvar_arquivo_de_funcionarios(){
-    int status;
-    FILE *tmp;
-    
-    arq = fopen(FUNC_FILENAME, "rb");
-    tmp = fopen(TMP_FILENAME, "wb");
-    
-    if (!arq && !tmp) {
-        printf("Erro ao abrir o arquivo\n");
-        system("pause");
-        return;
-    }
-    
-    while(!feof(arq)) {
-        if (fread(&f, sizeof(Funcionario), 1, arq)) {
-            if(pesquisar_no_hash(f.codigo)) {
-                if (aux.status == OCUPADO){
-                    fwrite(&f, sizeof(Funcionario), 1, tmp);
-                }
-            }
-        }
-    }
-    
-    if (arq) 
-        if (fclose(arq) != 0)
-            printf("%s nao pode ser fechado!\n", FUNC_FILENAME);
-    
-    if (tmp) 
-        if (fclose(tmp) != 0)
-            printf("%s nao pode ser fechado!\n", TMP_FILENAME);
-    
-    if (remove(FUNC_FILENAME) != 0)
-        printf("%s nao removido!\n", FUNC_FILENAME);
-    
-    if (rename(TMP_FILENAME, FUNC_FILENAME) != 0)
-        printf("%s nao renomeado!\n", TMP_FILENAME);
-}
-
-void abrir_arquivo_funcionarios(){
-    long endereco;
-    arq = fopen(FUNC_FILENAME, "rb");
-    if (!arq){
-        printf("Erro ao abrir o arquivo para listagem dos funcionarios\n");
-        system("pause");
-        return;
-    }
-    
-    while(!feof(arq)){
-        endereco = ftell(arq);
-        if (fread(&f, sizeof(Funcionario), 1, arq)) {
-            fseek(arq, endereco, SEEK_SET);
-            inserir_no_hash(f.codigo);
-            fseek(arq, (endereco+sizeof(Funcionario)), SEEK_SET);
-        }
-    }
-    fclose(arq);
 }
 
 void print_menu(){
