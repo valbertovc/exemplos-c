@@ -26,13 +26,13 @@ void excluir_funcionario(){
     printf("Codigo: ");
     scanf("%d", &codigo);
     
-    if(!search_hash(codigo)) {
+    if(!pesquisar_no_hash(codigo)) {
         printf("Funcionario nao encontrado!\n\n");
         system("pause");
         return;
     }
     
-    remove_hash(codigo);
+    remover_do_hash(codigo);
 }
 
 void consultar_funcionario() {    
@@ -41,7 +41,7 @@ void consultar_funcionario() {
     printf("Codigo: ");
     scanf("%d", &codigo);
     
-    if(!search_hash(codigo)) {
+    if(!pesquisar_no_hash(codigo)) {
         printf("Funcionario nao encontrado!\n\n");
         system("pause");
         return;
@@ -87,7 +87,7 @@ void listar_funcionarios() {
     
     while(!feof(arq)){
         if (fread(&f, sizeof(Funcionario), 1, arq)) {
-            if (search_hash(f.codigo)) {
+            if (pesquisar_no_hash(f.codigo)) {
                 if(aux.status == OCUPADO) {
                     printf("%6d ", f.codigo);
                     printf("%7.2f ", f.salario);
@@ -119,11 +119,11 @@ void inserir_funcionario() {
     }
     printf("\nEnd: %d\n\n", ftell(arq));
     getch();
-    if (search_hash(f.codigo)) {
+    if (pesquisar_no_hash(f.codigo)) {
         printf("Nao inserido!\n");
     } else {
         fseek(arq, 0, SEEK_END);
-        if (insert_hash(f.codigo)) { 
+        if (inserir_no_hash(f.codigo)) { 
             fwrite(&f, sizeof(Funcionario), 1, arq);
             printf("Inserido!\n");
         } else { 

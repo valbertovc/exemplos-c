@@ -17,25 +17,25 @@ Hash h[N], aux;
 FILE *arq;
 
 //PROTOTIPO DAS FUNCOES HASH
-void init_hash();
-int _hash(int key);
-int rehash(int i);
-int duplo_hash(int key);
-int duplo_rehash(int i, int key);
+void iniciar_hash();
+int calcular_hash(int key);
+int calcular_rehash(int i);
+int calcular_duplo_hash(int key);
+int calcular_duplo_rehash(int i, int key);
 int hash_cheio(int valor);
-void print_hash();
-int insert_hash(int key);
-int remove_hash(int key);
-long search_hash(int key);
-int print_to_file();
-void clear_hash();
-void init_aux();
+void exibir_hash();
+int inserir_no_hash(int key);
+int remover_do_hash(int key);
+long pesquisar_no_hash(int key);
+int exportar_para_arquivo();
+void limpar_hash();
+void iniciar_hash_auxiliar();
 
 /*
  * FUNCOES DE HASH
  */
 
-void init_hash(){
+void iniciar_hash(){
      int i;
      for (i = 0; i < N; i++){
          h[i].status = VAZIO;
@@ -44,27 +44,27 @@ void init_hash(){
      }
 }
 
-int _hash(int key){
+int calcular_hash(int key){
     return (key % N);
 }
 
-int rehash(int i){ 
+int calcular_rehash(int i){ 
     return ((i + 1) % N);
 }
 
-int duplo_hash(int key){
+int calcular_duplo_hash(int key){
     return (1 + (key % (N-1)));
 }
 
-int duplo_rehash(int i, int key){ 
-    return ((i + duplo_hash(key)) % N);
+int calcular_duplo_rehash(int i, int key){ 
+    return ((i + calcular_duplo_hash(key)) % N);
 }
 
 int hash_cheio(int valor) {
     return valor == N;
 }
 
-void print_hash(){
+void exibir_hash(){
     int i;
     char tipo[6];
     printf("KEY      ENDERECO STATUS\n");
@@ -85,7 +85,7 @@ void print_hash(){
     printf("-------- -------- -------\n");
 }
 
-int print_to_file(){
+int exportar_para_arquivo(){
     int i;
     char tipo[6];
     FILE *arq;
@@ -113,14 +113,14 @@ int print_to_file(){
     return 1;
 }
 
-int insert_hash(int key){
+int inserir_no_hash(int key){
     int i;
     int count = 0;
  
-    if (search_hash(key)) return 0;
-    i = _hash(key);
+    if (pesquisar_no_hash(key)) return 0;
+    i = calcular_hash(key);
     while (h[i].status == OCUPADO && !hash_cheio(count)){
-       i = duplo_rehash(i, key);
+       i = calcular_duplo_rehash(i, key);
        count++;
     }
     
@@ -135,15 +135,15 @@ int insert_hash(int key){
     }
 }
 
-void clear_hash(){
+void limpar_hash(){
     int i;
-    for(i = 0; i < N; i++) remove_hash(h[i].key);
+    for(i = 0; i < N; i++) remover_do_hash(h[i].key);
 }
 
-int remove_hash(int key){
+int remover_do_hash(int key){
     int i;
     int count = 0;
-    i = _hash(key);
+    i = calcular_hash(key);
     while (h[i].status != VAZIO && !hash_cheio(count)) {
        if (h[i].key == key) {
            h[i].key = 0;
@@ -151,26 +151,26 @@ int remove_hash(int key){
            h[i].status = LIVRE;
            return 1;
        } else {
-           i = duplo_rehash(i, key);
+           i = calcular_duplo_rehash(i, key);
            count++;
        }
     }
     return 0;
 }
 
-void init_aux() {
+void iniciar_hash_auxiliar() {
     aux.status = VAZIO;
     aux.end = 0;
     aux.key = 0;
 }
 
-long search_hash(int key) {
+long pesquisar_no_hash(int key) {
     int i;
     int count = 0;
     
-    init_aux();
+    iniciar_hash_auxiliar();
     
-    i = _hash(key);
+    i = calcular_hash(key);
     while(h[i].status != VAZIO && !hash_cheio(count)){
         if (h[i].key == key) {
             aux.status = h[i].status;
@@ -178,7 +178,7 @@ long search_hash(int key) {
             aux.key = h[i].key;
             return 1;
         }
-        i = duplo_rehash(i, key);
+        i = calcular_duplo_rehash(i, key);
         count++;
     }
     return 0;

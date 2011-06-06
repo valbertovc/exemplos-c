@@ -4,20 +4,20 @@
 //identificar os programadores
 
 void print_menu();
-void load_from_file();
-void unload_to_file();
+void abrir_arquivo_funcionarios();
+void salvar_arquivo_de_funcionarios();
 void remover();
 
 int main(){
     int opcao;
         
-    init_hash();
-    load_from_file();
+    iniciar_hash();
+    abrir_arquivo_funcionarios();
     
     do {
         system("cls");
         //listar_funcionarios();
-        print_hash();
+        exibir_hash();
         print_menu();
         scanf("%d", &opcao);
         
@@ -26,7 +26,7 @@ int main(){
             case 1: inserir_funcionario(); break;
             case 2: break;
             case 3: excluir_funcionario(); break;
-            case 4: printf("Opcao 4\n"); break;
+            case 4: break;
             case 5: consultar_funcionario(); break;
             case 6: listar_funcionarios(); break;
             default: printf("Opcao padrao\n");
@@ -34,14 +34,14 @@ int main(){
         
     } while(opcao);
     
-    if (print_to_file()) printf("Arquivo gerado!\n");
+    if (exportar_para_arquivo()) printf("Arquivo gerado!\n");
     else printf("Erro ao gerar arquivo!\n");
-    unload_to_file();
+    salvar_arquivo_de_funcionarios();
     
     system("pause");
 }
 
-void unload_to_file(){
+void salvar_arquivo_de_funcionarios(){
     
     FILE *tmp;
     
@@ -57,7 +57,7 @@ void unload_to_file(){
     while(!feof(arq)) {
         if (fread(&f, sizeof(Funcionario), 1, arq)) {
             printf("%s\n", f.nome);
-            if(search_hash(f.codigo)) {
+            if(pesquisar_no_hash(f.codigo)) {
                 if (aux.status == OCUPADO){
                     fwrite(&f, sizeof(Funcionario), 1, tmp);
                     printf("%s Salvo!\n", f.nome);
@@ -66,33 +66,13 @@ void unload_to_file(){
         }
     }
     //if(arq) printf("Arquivo fechado! %d\n", fclose(arq));
-    remover();
     //printf("Arquivo removido! %d\n", remove(FUNC_FILENAME));
     printf("Renomeando! %d\n", rename(TMP_FILENAME, FUNC_FILENAME));
     
     //printf("Arquivo temporario removido! %d\n", remove(TMP_FILENAME));
 }
 
-void remover() {  
-    int status;  
-       
-    if (arq != NULL) {  
-        status = fclose (arq);  
-        arq = NULL;  
-        if (status!=0) {  
-            printf ("\n\nErro ao fechar o arquivo.\n\n");  
-            return;  
-        } else {   
-            status=remove("CadastroAluno.dat");  
-            if(status!=0) {   
-                printf ("\n\nErro na remocao do arquivo.\n\n");  
-                return;  
-            } else printf ("\n\nArquivo removido com sucesso.\n\n");  
-        }    
-    }
-}
-
-void load_from_file(){
+void abrir_arquivo_funcionarios(){
     long endereco;
     arq = fopen(FUNC_FILENAME, "rb");
     if (!arq){
@@ -105,7 +85,7 @@ void load_from_file(){
         endereco = ftell(arq);
         if (fread(&f, sizeof(Funcionario), 1, arq)) {
             fseek(arq, endereco, SEEK_SET);
-            insert_hash(f.codigo);
+            inserir_no_hash(f.codigo);
             fseek(arq, (endereco+sizeof(Funcionario)), SEEK_SET);
         }
     }
