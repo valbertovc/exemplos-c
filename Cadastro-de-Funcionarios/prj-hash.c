@@ -28,7 +28,6 @@ int main(){
     
     do {
         system("cls");
-        exibir_hash();
         print_menu();
         scanf("%d", &opcao);
         
@@ -43,13 +42,13 @@ int main(){
             case 7: break;
             case 8: break;
             case 9: exibir_hash(); break;
-            default: printf("Opcao padrao\n");
+            default: printf("\nOpcao nao existe!\nVerifique e tente novamente.\n\n");
+                     system("pause");
         }
         
     } while(opcao);
     
-    if (exportar_para_arquivo()) printf("Arquivo gerado!\n");
-    else printf("Erro ao gerar arquivo!\n");
+    if (!exportar_para_arquivo()) printf("Erro ao gerar arquivo!\n");
     salvar_arquivo_de_funcionarios();
     
     system("pause");

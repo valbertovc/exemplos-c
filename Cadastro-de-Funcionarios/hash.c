@@ -111,14 +111,18 @@ void exibir_hash(){
  * fracasso.
  */
 
-void exportar_para_arquivo(){
+int exportar_para_arquivo(){
     int i;
     char tipo[6];
     FILE *arq;
     
     arq = fopen("LISTA-DE-ELEMENTOS-DO-HASH.txt", "w");
     
-    if (!arq) return 0;
+    if (!arq) {
+        printf("Nao foi possivel abrir o arquivo.\n");
+        system("pause");
+        return 0;
+    }
     fprintf(arq, "     key endereco  status\n");
     fprintf(arq, "-------- -------- -------\n");
     
@@ -136,6 +140,7 @@ void exportar_para_arquivo(){
     }
     fprintf(arq, "-------- -------- -------\n\n");
     fclose(arq);
+    return 1;
 }
 
 /* 

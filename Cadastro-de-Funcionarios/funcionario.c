@@ -7,7 +7,7 @@
 #define MAX_SIZE_NAME 30
 #define FUNC_FILENAME "FUNCIONARIOS.bin"
 #define TMP_FILENAME "FUNCIONARIOS-TMP.bin"
-
+#define LISTA_FUNC_FILENAME "LISTA-FUNCIONARIOS.TXT"
 typedef struct {
     int codigo;
     char nome[MAX_SIZE_NAME];
@@ -22,6 +22,7 @@ void inserir_funcionario();
 void listar_funcionarios();
 void excluir_todos_os_funcionarios();
 void excluir_funcionario();
+int exportar_lista_de_funcionarios_para_txt();
 
 void excluir_todos_os_funcionarios(){
     char opcao;
@@ -78,7 +79,7 @@ void consultar_funcionario() {
         return;         
     }
     
-    printf("\nCodigo    Salario Nome\n");
+    printf("\nCodigo Salario    Nome\n");
     printf("------ ---------- ------------------------------\n");
     printf("%6d ", f.codigo);
     printf("%10.2f ", f.salario);
@@ -88,15 +89,55 @@ void consultar_funcionario() {
     fclose(arq);
 }
 
+int exportar_lista_de_funcionarios_para_txt(){
+    FILE *arq_lista;
+    
+    arq = fopen(FUNC_FILENAME, "r");
+    arq_lista = fopen(LISTA_FUNC_FILENAME, "w");
+    
+    if (!arq && !arq_lista){
+        printf("Erro ao abrir o arquivo.\n");
+        system("pause");
+        return 0;
+    }
+    
+    fprintf(arq_lista, "\nCodigo Salario    Nome\n");
+    fprintf(arq_lista, "------ ---------- ------------------------------\n");
+    
+    while(!feof(arq)){
+        if (fread(&f, sizeof(Funcionario), 1, arq)) {
+            if (pesquisar_no_hash(f.codigo)) {
+                if(aux.status == OCUPADO) {
+                    fprintf(arq_lista, "%6d ", f.codigo);
+                    fprintf(arq_lista, "%10.2f ", f.salario);
+                    fprintf(arq_lista, "%s\n", f.nome);
+                }
+            }
+        }
+    }
+    fprintf(arq_lista, "------ ---------- ------------------------------\n");
+    
+    if (arq) 
+        if (fclose(arq) != 0)
+            printf("%s nao pode ser fechado!\n", FUNC_FILENAME);
+    
+    if (arq_lista) 
+        if (fclose(arq_lista) != 0)
+            printf("%s nao pode ser fechado!\n", LISTA_FUNC_FILENAME);
+            
+    return 1;
+}
+
 void listar_funcionarios() {
+    char opcao;
     arq = fopen(FUNC_FILENAME, "rb");
     if (!arq){
-        printf("Erro ao abrir o arquivo para listagem dos funcionarios\n");
+        printf("Erro ao abrir o arquivo.\n");
         system("pause");
         return;
     }
     
-    printf("\nCodigo    Salario Nome\n");
+    printf("\nCodigo Salario    Nome\n");
     printf("------ ---------- ------------------------------\n");
     
     while(!feof(arq)){
@@ -111,8 +152,18 @@ void listar_funcionarios() {
         }
     }
     printf("------ ---------- ------------------------------\n\n");
-    system("pause");
+    
     fclose(arq);
+    
+    fflush(stdin);
+    printf("Deseja exportar esta lista pra um arquivo?\nDigite 's' pra confirmar: ");
+    scanf("%c", &opcao);
+    
+    if (opcao == 's') {
+        exportar_lista_de_funcionarios_para_txt();
+        printf("Exportacao realizada com sucesso!\n\n");
+    }
+    system("pause");
 }
 
 void inserir_funcionario() {
@@ -130,8 +181,7 @@ void inserir_funcionario() {
         getch();
         return;
     }
-    printf("\nEnd: %d\n\n", ftell(arq));
-    getch();
+    
     if (pesquisar_no_hash(f.codigo)) {
         printf("Nao inserido!\n");
     } else {
