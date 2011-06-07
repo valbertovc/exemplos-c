@@ -15,6 +15,7 @@ typedef struct {
 } Funcionario;
 
 Funcionario f;
+
 void alterar_salario();
 void consultar_funcionario();
 void inserir_funcionario();
@@ -86,9 +87,7 @@ void consultar_funcionario() {
     system("pause");
     fclose(arq);
 }
-/* 
- * DEVE LISTAR APENAS OS FUNCIONARIOS QUE AINDA ESTAO NO HASH
- */
+
 void listar_funcionarios() {
     arq = fopen(FUNC_FILENAME, "rb");
     if (!arq){

@@ -32,7 +32,7 @@ void limpar_hash();
 void iniciar_hash_auxiliar();
 
 /*
- * FUNCOES DE HASH
+ * Inicializa todos os valores do hash
  */
 
 void iniciar_hash(){
@@ -44,21 +44,41 @@ void iniciar_hash(){
      }
 }
 
+/* 
+ * Calcula o hash linear
+ */
+ 
 int calcular_hash(int key){
     return (key % N);
 }
 
+/* 
+ * Calcula o rehash linear
+ */
+ 
 int calcular_rehash(int i){ 
     return ((i + 1) % N);
 }
 
+/* 
+ * Aplica o algoritmo de calculo do hash duplo
+ */
+ 
 int calcular_duplo_hash(int key){
     return (1 + (key % (N-1)));
 }
 
+/* 
+ * Aplica o algoritmo de calculo do rehash duplo
+ */
+ 
 int calcular_duplo_rehash(int i, int key){ 
     return ((i + calcular_duplo_hash(key)) % N);
 }
+
+/* 
+ * Verifica se o valor passado é do tamanho do hash
+ */
 
 int hash_cheio(int valor) {
     return valor == N;
@@ -82,10 +102,16 @@ void exibir_hash(){
             default: printf("");
         }
     }
-    printf("-------- -------- -------\n");
+    printf("-------- -------- -------\n\n");
+    system("pause");
 }
 
-int exportar_para_arquivo(){
+/* 
+ * Insere a chave no hash, retornando um em caso haja sucesso e zero em caso de 
+ * fracasso.
+ */
+
+void exportar_para_arquivo(){
     int i;
     char tipo[6];
     FILE *arq;
@@ -108,10 +134,14 @@ int exportar_para_arquivo(){
             default: fprintf(arq, "\n");
         }
     }
-    fprintf(arq, "-------- -------- -------\n");
+    fprintf(arq, "-------- -------- -------\n\n");
     fclose(arq);
-    return 1;
 }
+
+/* 
+ * Insere a chave no hash, retornando um em caso haja sucesso e zero em caso de 
+ * fracasso.
+ */
 
 int inserir_no_hash(int key){
     int i;
@@ -128,18 +158,26 @@ int inserir_no_hash(int key){
         h[i].key = key;
         h[i].status = OCUPADO;
         h[i].end = ftell(arq);
-        printf("hash insert ok\n");
         return 1;
     } else {
         return 0;
     }
 }
 
+/* 
+ * Limpa todos os elementos do hash.
+ */
+
 void limpar_hash(){
     int i;
     for(i = 0; i < N; i++) remover_do_hash(h[i].key);
 }
 
+/* 
+ * Remove a chave do hash e retorna um se a operacao for realizada com sucesso
+ * e zero quando nao conseguir remover a chave.
+ */
+ 
 int remover_do_hash(int key){
     int i;
     int count = 0;
@@ -158,11 +196,20 @@ int remover_do_hash(int key){
     return 0;
 }
 
+/* 
+ * Inicializa os valores das propriedades do hash auxiliar
+ */
+
 void iniciar_hash_auxiliar() {
     aux.status = VAZIO;
     aux.end = 0;
     aux.key = 0;
 }
+
+/* 
+ * Pesquisa se a chave passada por parametro está no hash. Retorna zero caso
+ * nao encontre e um caso encontre o valor buscado.
+ */
 
 long pesquisar_no_hash(int key) {
     int i;
