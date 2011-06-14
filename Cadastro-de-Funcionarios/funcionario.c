@@ -16,23 +16,177 @@ typedef struct {
 
 Funcionario f;
 
-void alterar_salario();
+
 void consultar_funcionario();
 void inserir_funcionario();
 void listar_funcionarios();
 void excluir_todos_os_funcionarios();
 void excluir_funcionario();
+void abrir_arquivo_funcionarios();
+void salvar_arquivo_de_funcionarios();
 int exportar_lista_de_funcionarios_para_txt();
+float calcular_soma_dos_salarios();
+float calcular_media_salarios();
+void exibir_soma_e_media_dos_salarios();
+float obter_menor_salario();
+float obter_maior_salario();
+void exibir_maior_e_menor_salario();
+
+void alterar_salario() {
+    int codigo;
+    float salario_novo = 0;
+    
+    printf("Codigo: ");
+    scanf("%d", &codigo);
+    
+    if(!pesquisar_no_hash(codigo)) {
+        printf("Funcionario nao encontrado!\n\n");
+        system("pause");
+        return;
+    }
+    
+    arq = fopen(FUNC_FILENAME, "r+b");
+    if (!arq){
+        printf("Erro ao abrir o arquivo para listagem dos funcionarios\n");
+        system("pause");
+        return;
+    }
+
+    fseek(arq, aux.end, SEEK_SET);
+    
+    if (fread(&f, sizeof(Funcionario), 1, arq)) {
+        printf("Codigo.........: %d\n", f.codigo);
+        printf("Nome...........: %s\n", f.nome);
+        printf("Salario atual..: %.2f\n\n", f.salario);
+        printf("Digite o novo salario: ");
+        
+        fflush(stdin);
+        scanf("%f", &salario_novo);
+        
+        f.salario = salario_novo;
+        
+        fseek(arq, aux.end, SEEK_SET);
+        
+        if (remover_do_hash(f.codigo) && 
+            inserir_no_hash(f.codigo) &&
+            fwrite(&f, sizeof(Funcionario), 1, arq)) {
+                printf("Salario alterado!\n");
+        } else {
+            printf("Erro ao alterar o salario!\n");
+        }
+    }
+    system("pause");
+    fclose(arq);
+}
+
+void exibir_soma_e_media_dos_salarios(){
+    printf("Soma dos salarios......: %10.2f\n", calcular_soma_dos_salarios());
+    printf("Media dos salarios.....: %10.2f\n", calcular_media_salarios());
+    system("pause");    
+}
+
+float calcular_media_salarios(){
+    if (!quantidade_de_ocupados()) return 0;
+    return (calcular_soma_dos_salarios() / quantidade_de_ocupados());
+}
+
+float calcular_soma_dos_salarios(){
+    int i, soma = 0;
+    
+    arq = fopen(FUNC_FILENAME, "rb");
+    if (!arq){
+        printf("Erro ao abrir o arquivo para listagem dos funcionarios\n");
+        system("pause");
+        return;
+    }
+
+    for (i = 0; i < N; i++) {
+        if (h[i].status == OCUPADO) {
+            fseek(arq, h[i].end, SEEK_SET);
+            if (fread(&f, sizeof(Funcionario), 1, arq)) {
+                soma += f.salario;
+            }
+        }
+    }
+    fclose(arq);
+    return soma;    
+}
+
+void exibir_maior_e_menor_salario(){
+    printf("Maior salario.....: %10.2f\n", obter_maior_salario());
+    printf("Menor salario.....: %10.2f\n", obter_menor_salario());
+    system("pause");
+}
+
+float obter_menor_salario(){
+    int i;
+    float menor = 9999999;
+    
+    arq = fopen(FUNC_FILENAME, "rb");
+    if (!arq){
+        printf("Erro ao abrir o arquivo para listagem dos funcionarios\n");
+        system("pause");
+        return;
+    }
+
+    if (hash_vazio()){
+        printf("Nao foi possivel obter o menor salario. Nao existe funcionarios cadastrados.\n");
+        system("pause");
+        return;
+    }
+
+    for (i = 0; i < N; i++) {
+        if (h[i].status == OCUPADO) {
+            fseek(arq, h[i].end, SEEK_SET);
+            if (fread(&f, sizeof(Funcionario), 1, arq)) {
+                if (f.salario < menor) menor = f.salario;
+            }
+        }
+    }
+    fclose(arq);
+    return menor;    
+}
+
+float obter_maior_salario(){
+    int i;
+    float maior = -999999;
+    
+    arq = fopen(FUNC_FILENAME, "rb");
+    if (!arq){
+        printf("Erro ao abrir o arquivo para listagem dos funcionarios\n");
+        system("pause");
+        return;
+    }
+    
+    if (hash_vazio()){
+        printf("Nao foi possivel obter o maior salario. Nao existe funcionarios cadastrados.\n");
+        system("pause");
+        return;
+    }
+
+    for (i = 0; i < N; i++) {
+        if (h[i].status == OCUPADO) {
+            fseek(arq, h[i].end, SEEK_SET);
+            if (fread(&f, sizeof(Funcionario), 1, arq)) {
+                if (f.salario > maior) maior = f.salario;
+            }
+        }
+    }
+    fclose(arq);
+    return maior;    
+}
 
 void excluir_todos_os_funcionarios(){
     char opcao;
-    printf("Voce tem certeza de que deseja excluir todos? \nDigite 's' para confirmar, senao digite qualquer outra tecla.\n");
-    opcao = getch();
+    printf("Tem certeza de que deseja excluir todos?\nDigite 's' para confirmar: ");
+    fflush(stdin);
+    scanf("%c", &opcao);
+    
     if (opcao == 's') {
         limpar_hash();
-        printf("\nExclusao realizada com sucesso!\n\n");
+        printf("Exclusao realizada com sucesso!\n\n");
     } else {
-        printf("\nOperacao cancelada!\n\n");
+        printf("Operacao cancelada!\n\n");
     }
     system("pause");
 }
@@ -49,7 +203,15 @@ void excluir_funcionario(){
         return;
     }
     
-    remover_do_hash(codigo);
+    if (!remover_do_hash(codigo)){
+        printf("Nao foi possivel remover\n");
+    } else { 
+        f.codigo = 0;
+        fseek(arq, aux.end, SEEK_SET);
+        fwrite(&f, sizeof(Funcionario), 1, arq);
+        printf("Removido com sucesso!\n");
+    }
+    system("pause");
 }
 
 void consultar_funcionario() {    
@@ -130,6 +292,8 @@ int exportar_lista_de_funcionarios_para_txt(){
 
 void listar_funcionarios() {
     char opcao;
+    int i; 
+    
     arq = fopen(FUNC_FILENAME, "rb");
     if (!arq){
         printf("Erro ao abrir o arquivo.\n");
@@ -140,14 +304,13 @@ void listar_funcionarios() {
     printf("\nCodigo Salario    Nome\n");
     printf("------ ---------- ------------------------------\n");
     
-    while(!feof(arq)){
-        if (fread(&f, sizeof(Funcionario), 1, arq)) {
-            if (pesquisar_no_hash(f.codigo)) {
-                if(aux.status == OCUPADO) {
-                    printf("%6d ", f.codigo);
-                    printf("%10.2f ", f.salario);
-                    printf("%s\n", f.nome);
-                }
+    for (i = 0; i < N; i++) {
+        if (h[i].status == OCUPADO) {
+            fseek(arq, h[i].end, SEEK_SET);
+            if (fread(&f, sizeof(Funcionario), 1, arq)) {
+                printf("%6d ", f.codigo);
+                printf("%10.2f ", f.salario);
+                printf("%s\n", f.nome);
             }
         }
     }
@@ -235,7 +398,7 @@ void salvar_arquivo_de_funcionarios(){
         printf("%s nao renomeado!\n", TMP_FILENAME);
 }
 
-void abrir_arquivo_funcionarios(){
+void abrir_arquivo_funcionarios() {
     long endereco;
     arq = fopen(FUNC_FILENAME, "rb");
     if (!arq){

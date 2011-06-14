@@ -30,10 +30,22 @@ long pesquisar_no_hash(int key);
 int exportar_para_arquivo();
 void limpar_hash();
 void iniciar_hash_auxiliar();
-
+int quantidade_de_ocupados();
+int hash_vazio();
 /*
  * Inicializa todos os valores do hash
  */
+
+int hash_vazio(){
+    return (quantidade_de_ocupados() == 0);
+}
+int quantidade_de_ocupados(){
+    int i, qtde = 0;
+    for (i = 0; i < N; i++)
+        if (h[i].status == OCUPADO)
+            qtde += 1;
+    return qtde;
+}
 
 void iniciar_hash(){
      int i;
@@ -189,6 +201,7 @@ int remover_do_hash(int key){
     i = calcular_hash(key);
     while (h[i].status != VAZIO && !hash_cheio(count)) {
        if (h[i].key == key) {
+           aux = h[i];
            h[i].key = 0;
            h[i].end = 0;
            h[i].status = LIVRE;

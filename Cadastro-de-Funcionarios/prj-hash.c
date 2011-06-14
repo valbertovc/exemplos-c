@@ -16,9 +16,6 @@
  */
 
 void print_menu();
-void abrir_arquivo_funcionarios();
-void salvar_arquivo_de_funcionarios();
-void remover();
 
 int main(){
     int opcao;
@@ -34,13 +31,13 @@ int main(){
         switch (opcao) {
             case 0: printf("Saindo...\n"); break;
             case 1: inserir_funcionario(); break;
-            case 2: break;
+            case 2: alterar_salario(); break;
             case 3: excluir_funcionario(); break;
             case 4: excluir_todos_os_funcionarios(); break;
             case 5: consultar_funcionario(); break;
             case 6: listar_funcionarios(); break;
-            case 7: break;
-            case 8: break;
+            case 7: exibir_soma_e_media_dos_salarios(); break;
+            case 8: exibir_maior_e_menor_salario(); break;
             case 9: exibir_hash(); break;
             default: printf("\nOpcao nao existe!\nVerifique e tente novamente.\n\n");
                      system("pause");
