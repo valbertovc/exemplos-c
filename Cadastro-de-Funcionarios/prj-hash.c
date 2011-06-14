@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include "hash.c"
-#include "funcionario.c"
+#include "funcionario.h"
 
 /* INSTITUTO FEDERAL DE EDUCACAO CIENCIA E TECNOLOGIA
  * CURSO SUPERIOR DE TECNOLOGIA EM SISTEMAS PARA INTERNET
@@ -12,7 +11,6 @@
  *
  * PROJETO: CADASTRO DE FUNCIONARIOS UTILIZANDO ARQUIVOS
  * BINARIOS, ESTRUTURAS HASH DUPLO, INDEXACAO.
- 
  */
 
 void print_menu();

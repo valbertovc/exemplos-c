@@ -1,44 +1,18 @@
-#ifndef _HASH_
-#define _HASH_
-
 #include <stdio.h>
-#define N 5
-#define VAZIO -1
-#define LIVRE -2
-#define OCUPADO -3
+#include "hash.h"
 
-typedef struct {
-    int key;
-    long end;
-    int status;
-} Hash;
-
-Hash h[N], aux;
-FILE *arq;
-
-//PROTOTIPO DAS FUNCOES HASH
-void iniciar_hash();
-int calcular_hash(int key);
-int calcular_rehash(int i);
-int calcular_duplo_hash(int key);
-int calcular_duplo_rehash(int i, int key);
-int hash_cheio(int valor);
-void exibir_hash();
-int inserir_no_hash(int key);
-int remover_do_hash(int key);
-long pesquisar_no_hash(int key);
-int exportar_para_arquivo();
-void limpar_hash();
-void iniciar_hash_auxiliar();
-int quantidade_de_ocupados();
-int hash_vazio();
 /*
- * Inicializa todos os valores do hash
+ * Verifica se o hash esta vazio
  */
 
 int hash_vazio(){
     return (quantidade_de_ocupados() == 0);
 }
+
+/* 
+ * Conta a quantidade de espacos ocupados no hash
+ */
+
 int quantidade_de_ocupados(){
     int i, qtde = 0;
     for (i = 0; i < N; i++)
@@ -47,6 +21,10 @@ int quantidade_de_ocupados(){
     return qtde;
 }
 
+/* 
+ * Inicia todos os valores do hash com o zero e status como vazio.
+ */
+ 
 void iniciar_hash(){
      int i;
      for (i = 0; i < N; i++){
@@ -96,6 +74,10 @@ int hash_cheio(int valor) {
     return valor == N;
 }
 
+/* 
+ * Exibe o hash com a estrutura de indices.
+ */
+
 void exibir_hash(){
     int i;
     char tipo[6];
@@ -119,8 +101,7 @@ void exibir_hash(){
 }
 
 /* 
- * Insere a chave no hash, retornando um em caso haja sucesso e zero em caso de 
- * fracasso.
+ * Exporta o hash com a estrutura de indices para um arquivo de texto.
  */
 
 int exportar_para_arquivo(){
@@ -249,4 +230,3 @@ long pesquisar_no_hash(int key) {
     return 0;
 }
 
-#endif
